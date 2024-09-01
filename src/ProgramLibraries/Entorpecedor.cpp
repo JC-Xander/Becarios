@@ -1,5 +1,8 @@
 #include "Entorpecedor.h"
+
 using namespace std;
+
+Entorpecedor:: Entorpecedor() : edificio(-1) {}
 
 Entorpecedor::Entorpecedor(const int _idEdificio) : edificio(_idEdificio) {}
 

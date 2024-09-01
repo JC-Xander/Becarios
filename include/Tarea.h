@@ -1,15 +1,15 @@
 #ifndef TAREA_H
 #define TAREA_H
 
-#include <string>
-#include <iostream>
+#include <stdlib.h>
+#include <unistd.h>
 
 /**
  * Tareas que se le asignara al personal
  */
 class Tarea {
 private:
-    std::string nombre; 
+    int idTarea;
     int dificultad;
     bool esElectrica;
 
@@ -20,12 +20,12 @@ public:
      * @param int Dificultad de la tarea
      * @param bool Ocupa electricidad
      */
-    Tarea(const std::string, int, bool);
+    Tarea(const int, int);
 
     /**
      * @return Nombre de la tarea
      */
-    std::string getNombre() const;
+    int getIdTarea() const;
 
     /**
      * @return Difucultad de la tarea
@@ -38,9 +38,5 @@ public:
      */
     bool getDocumentacion();
 };
-/**
- *  Sobrecarga del operador de inserción <<
- */
-std::ostream& operator<<(std::ostream& os, const Tarea& _tarea);
 
 #endif // TAREA_H

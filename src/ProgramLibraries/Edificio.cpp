@@ -18,6 +18,8 @@ const string area[NUM_AREA] = {
     "Area de Estudio",
 };
 
+Edificio::Edificio() : edificioActual(-1){}
+
 Edificio::Edificio(int _numEdificio) : edificioActual(_numEdificio) {
     for (int i = 0; i < NUM_AREA; i++){
         this->areaDisponible[i] = true;
@@ -68,6 +70,10 @@ bool Edificio::desocuparArea(int _numArea){
         this->totalAreasDisponibles++;
         return true;
     }
+}
+
+int Edificio::getIdEdificio(){
+    return this->edificioActual;
 }
 
 int Edificio::getTotalAreasDisponibles(){

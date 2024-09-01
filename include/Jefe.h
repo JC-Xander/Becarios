@@ -3,21 +3,34 @@
 
 #include <iostream>
 #include <vector> 
-#include "Becario.h"
-#include "Entorpecedor.h"
 
-class Jefe : public Becario {
+#include "Entorpecedor.h"
+#include "Edificio.h"
+#include "Tarea.h"
+
+class Jefe {
 private:
-    int Edificio;
-    int numGrupo; 
+    int idJefe;
+    Edificio edificio;
     Entorpecedor entorpecedor;
+    int numGrupo; 
+    int contTareasCompletadas;
+    int contTareasAbandonadas;
+
     
 
 public:
+    Jefe(int);
     /**
      * Genera una instancia de jefe con un ID
      */
     Jefe(const int, int);
+
+    Edificio getEdificio();
+
+    int getIdJefe();
+    int getContTareasCompletados();
+    int getContTareasAbandonadas();
 
     /**
      * Agrega personal al grupo
@@ -28,9 +41,9 @@ public:
     /**
      * Retorna el nuemro de integrantes del grupo
      */
-    int getNumGrupo() const;
+    int getNumGrupo();
 
-    bool PedirTarea();
+    Tarea PedirTarea(int);
 
     bool Ayuda();
 

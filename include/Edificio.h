@@ -15,14 +15,16 @@ class Edificio {
     private:
         int edificioActual;
         int totalAreasDisponibles = NUM_AREA;
+        bool areaDisponible[NUM_AREA];
 
     public:
+        Edificio();
         Edificio(int);
-        bool areaDisponible[NUM_AREA];
         int getTotalAreasDisponibles();
         bool asignarArea(int);
         bool desocuparArea(int);
         int buscarAsignarArea();
+        int getIdEdificio();
         std::string getEdificio();
         std::string getArea(int);
         std::string getData(int);

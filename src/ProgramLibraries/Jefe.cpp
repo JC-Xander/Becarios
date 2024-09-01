@@ -1,23 +1,45 @@
 #include "Jefe.h"
 
+using namespace std;
+
 // Constructor
-Jefe::Jefe(const int _ID) : Becario(_ID), numGrupo(0) {}
+Jefe::Jefe(int _ID) : idJefe(_ID) {}
 
-bool Jefe::AgregarPersonal() {
-    
-    return true;
+Jefe::Jefe(const int _ID, int _idEdificio) {
+    this->idJefe = _ID;
+    Edificio edificioAux(_idEdificio);
+    this->edificio = edificioAux;
+
+    Entorpecedor entorpecedorAux(_idEdificio);
+    this->entorpecedor = entorpecedorAux;
+
+    this->numGrupo = 10;
+    this->contTareasCompletadas = 5;
+    this->contTareasAbandonadas = 5;
 }
 
-// Obtiene el puntero al grupo de becarios
-std::vector<Becario> Jefe::getGrupo() const {
-    return this->Grupo;
-}
+int Jefe::getIdJefe() { return this->idJefe; }
 
-// Obtiene el numero de integrantes del grupo
-int Jefe::getNumGrupo() const {
+Edificio Jefe::getEdificio() { return this->edificio; }
+
+int Jefe::getContTareasCompletados() { return this->contTareasCompletadas; }
+
+int Jefe::getContTareasAbandonadas() { return this->contTareasAbandonadas; }
+
+int Jefe::getNumGrupo(){
     return this->numGrupo;
 }
 
-std::ostream& operator<<(std::ostream& os, const Becario& _jefe){
-    os << _jefe.getID() << " ) ";
+bool Jefe::AgregarPersonal() {
+    return true;
+}
+Tarea Jefe::PedirTarea(int _idRol){
+    Tarea tareaAux(-1, -1);
+    return tareaAux;
+}
+bool Jefe::Ayuda(){
+    return false;
+}
+bool Jefe::pedirDocumentacion(){
+    return false;
 }

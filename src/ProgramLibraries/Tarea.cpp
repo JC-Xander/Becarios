@@ -1,26 +1,26 @@
 #include "Tarea.h"
-#include <iostream>
+
 using namespace std;
 
-Tarea::Tarea(string _nombre, int _dificultad, bool _esElectrica){
-    this->nombre = _nombre;
+Tarea::Tarea(int _idTarea, int _dificultad){
+    this->idTarea = _idTarea;
     this->dificultad = _dificultad;
-    this->esElectrica = _esElectrica;
+
+    int _electrica = rand() % 2;
+    if(_electrica)
+        this->esElectrica = true;
+    else
+        this->esElectrica = false;
 }
 
-string Tarea::getNombre() const { return this->nombre; }
+int Tarea::getIdTarea() const { return this->idTarea; }
 
 int Tarea::getDificultad() const { return this->dificultad; }
 
 bool Tarea::getDocumentacion(){
-    int num = 0 + rand() % 3;
+    int num = rand() % 4;
     if( num == 0)
         return false;
     else
         return true;
-}
-
-ostream& operator<<(ostream& os, const Tarea& _tarea){
-    os << _tarea.getNombre();
-    return os;
 }

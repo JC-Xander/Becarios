@@ -3,10 +3,7 @@
 
 #include <iostream>
 #include <string>
-#include <stdlib.h>
-
-
-#include "Becario.h"
+#include <unistd.h>
 
 #define NUM_ACCIONES 7
 
@@ -25,6 +22,7 @@ class Entorpecedor {
         int edificio;
     
     public:
+        Entorpecedor();
         Entorpecedor(const int);
         bool setIdBecario(const int);
         bool MolestarBecario();
