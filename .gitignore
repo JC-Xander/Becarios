@@ -1,5 +1,5 @@
 # --- Jean -----
 build/*
 # --- Programa ----
-!build/BecarioRun
+!build/BecariosRun
 .vscode

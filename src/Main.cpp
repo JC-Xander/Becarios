@@ -81,9 +81,17 @@
 -------------------------------------------------------------------*/
 
 // --------- LIBRERIAS PERSONALIZADAS ------------
-#include "Jefe.h"
+//#include "Jefe.h"
 /** 
 -------------------------------------------------------------------*/
+#include <stdlib.h>
+/**
+ * srand()
+ */
+#include <time.h>
+/**
+ * time()
+ */
 using namespace std;
 
 #define N_JEFE 2             // Numero de Jefes
@@ -96,99 +104,149 @@ union senum{
     int val;
 };
 
+#include "Edificio.h"
+#include "Entorpecedor.h"
+
 int main() {
-    // ------- Semaforos -------
-    int sem;
-    int r;
-    pid_t pid;
-    union senum arg;
-    struct sembuf MC_Libre = {SEM_JEFE, 1, 0};
-    struct sembuf MC_Ocupada = {SEM_JEFE, -1, 0};
+    // srand(time(NULL));
 
-    sem = semget(IPC_PRIVATE, 1, IPC_CREAT | IPC_EXCL | S_IRUSR | S_IWUSR);
-    if(sem == -1){
-        perror("Error creando semaforos.");
-        return -1;
-    }
+    // Edificio B2(1);
+    // for (int i = 0; i < NUM_AREA; i++){
+    //     cout << B2.areaDisponible[i] << endl;
+    // }
 
-    arg.val = 1;
-    r = semctl(sem, SEM_JEFE, SETVAL, arg);
-    if(r == -1){
-        perror("Error al inicar el semaforo JEFE");
-        return -1;
-    }
+    // // -------- SIMULACIÓN DE ASIGNACIÓN DE AULAS ---------
+    // for(int i = 0; i < 5; i++){
+    //     int aulaAleatoria = rand() % 5;  
+    //     cout << aulaAleatoria << ") ";
 
-    // -------- Memoria compartida --------
-    key_t Clave;
-    int ID_Memoria;
-    Jefe* jefasos = NULL;
+    //     if (B2.asignarArea(aulaAleatoria)){
+    //         cout << "Se a ocupado el area -> " << B2.getData(aulaAleatoria).c_str() << "." << endl;
+    //     }else{
+    //         cout << B2.getArea(i) << " -> Esta ocupada." <<  endl;
+    //         if(B2.getTotalAreasDisponibles() == 0){
+    //             cout << "No hay areas disponibles" << endl;
+    //             cout << "El Becario fue enviado a casa" << endl;
+    //         }else{
+    //             cout << "Asignando nueva Area" <<endl;
+    //             int idAreaAsignada = B2.buscarAsignarArea();
+    //             if (idAreaAsignada == -1){
+    //                 cout << "No hay areas disponibles" << endl;
+    //                 cout << "El Becario fue enviado a casa" << endl;
+    //             }else{
+    //                 cout << "Se a ocupado el area -> " << B2.getData(idAreaAsignada).c_str() << "." << endl;
+    //             }
+    //         }
+    //     }
+    // }
 
-    Clave = ftok("/bin/ls", 33);
-    if (Clave == -1) {
-        cout << "No consigo clave para memoria compartida" << endl;
-        exit(0);
-    }
+    // for (int i = 0; i < NUM_AREA; i++){
+    //     cout << B2.areaDisponible[i] << endl;
+    // }
 
-    ID_Memoria = shmget(Clave, (sizeof(Jefe) * N_JEFE), 0777 | IPC_CREAT);
-    if (ID_Memoria == -1) {
-        cerr << "No se pudo obtener el ID para la memoria compartida" << std::endl;
-        exit(1);
-    }
 
-    jefasos = (Jefe*)shmat(ID_Memoria, nullptr, 0);
-    if (jefasos == (void*)-1) {
-        cout << "No consigo memoria compartida" << endl;
-        exit(0);
-    }
 
-    for (int i = 0; i < N_JEFE; i++) {
-        pid = fork();
-        if (pid == -1) {
-            cout << "Fallo al crear el nuevo proceso";
-        }
 
-        if (pid == 0) {
-            r = semop(sem, &MC_Ocupada, 1);
-            cout<< i << " a cerrado el cemaforo"<<endl;
-            {
-                cout << "Nuevo Proceso" << endl;
-                Jefe nuevo(5);
-                jefasos[i] = nuevo;
-                for(int c = 0; c < 5; c++){
-                    sleep(1);
-                }
-            }
-            r = semop(sem, &MC_Libre, 1);
-            cout<< i << " a abierto el cemaforo" << endl;
+
+
+
+
+
+
+
+
+    // // ------- Semaforos -------
+    // int sem;
+    // int r;
+    // pid_t pid;
+    // union senum arg;
+    // struct sembuf MC_Libre = {SEM_JEFE, 1, 0};
+    // struct sembuf MC_Ocupada = {SEM_JEFE, -1, 0};
+
+    // sem = semget(IPC_PRIVATE, 1, IPC_CREAT | IPC_EXCL | S_IRUSR | S_IWUSR);
+    // if(sem == -1){
+    //     perror("Error creando semaforos.");
+    //     return -1;
+    // }
+
+    // arg.val = 1;
+    // r = semctl(sem, SEM_JEFE, SETVAL, arg);
+    // if(r == -1){
+    //     perror("Error al inicar el semaforo JEFE");
+    //     return -1;
+    // }
+
+    // // -------- Memoria compartida --------
+    // key_t Clave;
+    // int ID_Memoria;
+    // Jefe* jefasos = NULL;
+
+    // Clave = ftok("/bin/ls", 33);
+    // if (Clave == -1) {
+    //     cout << "No consigo clave para memoria compartida" << endl;
+    //     exit(0);
+    // }
+
+    // ID_Memoria = shmget(Clave, (sizeof(Jefe) * N_JEFE), 0777 | IPC_CREAT);
+    // if (ID_Memoria == -1) {
+    //     cerr << "No se pudo obtener el ID para la memoria compartida" << std::endl;
+    //     exit(1);
+    // }
+
+    // jefasos = (Jefe*)shmat(ID_Memoria, nullptr, 0);
+    // if (jefasos == (void*)-1) {
+    //     cout << "No consigo memoria compartida" << endl;
+    //     exit(0);
+    // }
+
+    // for (int i = 0; i < N_JEFE; i++) {
+    //     pid = fork();
+    //     if (pid == -1) {
+    //         cout << "Fallo al crear el nuevo proceso";
+    //     }
+
+    //     if (pid == 0) {
+    //         r = semop(sem, &MC_Ocupada, 1);
+    //         cout<< i << " a cerrado el cemaforo"<<endl;
+    //         {
+    //             cout << "Nuevo Proceso" << endl;
+    //             Jefe nuevo(5);
+    //             jefasos[i] = nuevo;
+    //             for(int c = 0; c < 5; c++){
+    //                 sleep(1);
+    //             }
+    //         }
+    //         r = semop(sem, &MC_Libre, 1);
+    //         cout<< i << " a abierto el cemaforo" << endl;
 
             
 
-            exit(0);
-        }
-    }
+    //         exit(0);
+    //     }
+    // }
 
-    // Esperar a que todos los procesos hijos terminen
-    for (int i = 0; i < N_JEFE; i++) {
-        wait(nullptr);
-    }
+    // // Esperar a que todos los procesos hijos terminen
+    // for (int i = 0; i < N_JEFE; i++) {
+    //     wait(nullptr);
+    // }
 
-    // Ahora es seguro imprimir los resultados
-    cout << "========================" << endl;
-    for (int i = 0; i < N_JEFE; i++) {
-        cout << jefasos[i] << endl;
-    }
+    // // Ahora es seguro imprimir los resultados
+    // cout << "========================" << endl;
+    // for (int i = 0; i < N_JEFE; i++) {
+    //     cout << jefasos[i] << endl;
+    // }
 
-    shmdt((void*)jefasos);
-    shmctl(ID_Memoria, IPC_RMID, (struct shmid_ds*)NULL);
+    // shmdt((void*)jefasos);
+    // shmctl(ID_Memoria, IPC_RMID, (struct shmid_ds*)NULL);
 
-    pid = wait(&r);
-	while ( (pid !=-1) ||  (pid == -1 && errno == EINTR) )
-		pid = wait(&r);
-		r = semctl(sem, 0, IPC_RMID);
+    // pid = wait(&r);
+	// while ( (pid !=-1) ||  (pid == -1 && errno == EINTR) )
+	// 	pid = wait(&r);
+	// 	r = semctl(sem, 0, IPC_RMID);
 
-		if (r == -1)
-			perror("Error eliminando semáforos.");
+	// 	if (r == -1)
+	// 		perror("Error eliminando semáforos.");
 
-		printf("Fin.\n");
+	// 	printf("Fin.\n");
     return 0;
 }

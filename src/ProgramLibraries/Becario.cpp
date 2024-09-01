@@ -1,5 +1,5 @@
 #include "Becario.h" 
-#include <unistd.h>
+
 
 Becario::Becario(const int _ID) : ID(_ID), ID_Proceso(getpid()) {}
 

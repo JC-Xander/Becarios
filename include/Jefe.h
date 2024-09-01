@@ -1,20 +1,23 @@
 #ifndef JEFE_H
 #define JEFE_H
 
-#include "Becario.h"
 #include <iostream>
 #include <vector> 
+#include "Becario.h"
+#include "Entorpecedor.h"
 
 class Jefe : public Becario {
 private:
-    std::vector<Becario> Grupo;
+    int Edificio;
     int numGrupo; 
+    Entorpecedor entorpecedor;
+    
 
 public:
     /**
      * Genera una instancia de jefe con un ID
      */
-    Jefe(const int);
+    Jefe(const int, int);
 
     /**
      * Agrega personal al grupo
@@ -23,19 +26,16 @@ public:
     bool AgregarPersonal();
 
     /**
-     * @return El grupo de becarios
-     */
-    std::vector<Becario> getGrupo() const;
-
-    /**
      * Retorna el nuemro de integrantes del grupo
      */
     int getNumGrupo() const;
 
+    bool PedirTarea();
+
+    bool Ayuda();
+
+    bool pedirDocumentacion();
+
 };
-/**
- *  Sobrecarga del operador de inserción <<
- */
-std::ostream& operator<<(std::ostream& os, const Becario& _jefe);
 
 #endif // JEFE_H

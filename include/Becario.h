@@ -2,8 +2,8 @@
 #define BECARIO_H
 
 #include <iostream>
-#include <string>
 #include <sys/types.h>
+#include <unistd.h>
 
 /**
  * De esta clase se heradaran todos los componentes 
@@ -33,6 +33,6 @@ public:
 /**
  *  Sobrecarga del operador de inserción <<
  */
-std::ostream& operator<<(std::ostream& os, const Becario& _becario);
+std::ostream& operator<<(std::ostream&, const Becario);
 
 #endif // BECARIO_H
