@@ -38,12 +38,15 @@
 #include <unistd.h>
 /** 
  * Metodos utilizados
- * sleep(@int) Permite pausar la ejecución del programa por n segundos
+ * - sleep(@int) Permite pausar la ejecución del programa por n segundos
+ * - getpid()
 -------------------------------------------------------------------*/
 #include <cstdlib>
 /** 
  * Metodos utilizados
  * - exit()
+ * - rand()
+ * - srand()
 -------------------------------------------------------------------*/
 
 
@@ -84,22 +87,19 @@
 //#include "Jefe.h"
 /** 
 -------------------------------------------------------------------*/
-#include <stdlib.h>
-/**
- * srand()
- */
 #include <time.h>
 /**
  * time()
  */
 using namespace std;
 
+#define N_BECARIO 5;
 #define N_JEFE 6            // Numero de Jefes
 #define SEM_JEFE 0           // Proceso JEFE
-#define SEM_AYUDA 1          // Proceso Becario
-#define SEM_HERRAMIENTAS 2   // Recoger Herramientas
-#define SEM_ENTORPECEDOR 3
-#define SEM_EDIFICIO 4
+#define SEM_EDIFICIO 1
+#define SEM_AYUDA 2          // Proceso Becario
+#define SEM_HERRAMIENTAS 3   // Recoger Herramientas
+#define SEM_ENTORPECEDOR 4
 
 union senum{
     int val;
@@ -113,7 +113,6 @@ union senum{
 
 int main() {
     // ----- PARA QUE LAS ACCIONES SEAN ALEATORIAS EN CADA EJECUCIÓN -----
-    srand(time(NULL));
 
     // Edificio B2(1);
     // for (int i = 0; i < NUM_AREA; i++){
@@ -164,20 +163,57 @@ int main() {
     int sem;
     int r;
     pid_t pid;
+
     union senum arg;
+
     struct sembuf MC_Libre = {SEM_JEFE, 1, 0};
     struct sembuf MC_Ocupada = {SEM_JEFE, -1, 0};
 
-    sem = semget(IPC_PRIVATE, 1, IPC_CREAT | IPC_EXCL | S_IRUSR | S_IWUSR);
+    struct sembuf EDIFICIO_SUBE = {SEM_EDIFICIO, 1, 0};
+    struct sembuf EDIFICIO_BAJA = {SEM_EDIFICIO, -1, 0};
+
+    struct sembuf AYUDA_SUBE = {SEM_AYUDA, 1, 0};
+    struct sembuf AYUDA_BAJA = {SEM_AYUDA, -1, 0};
+
+    struct sembuf HERRAMIENTAS_SUBE = {SEM_HERRAMIENTAS, 1, 0};
+    struct sembuf HERRAMIENTAS_BAJA = {SEM_HERRAMIENTAS, -1, 0};
+
+    struct sembuf ENTORPECEDOR_SUBE = {SEM_ENTORPECEDOR, 1, 0};
+    struct sembuf ENTORPECEDOR_BAJA = {SEM_ENTORPECEDOR, -1, 0};
+
+    sem = semget(IPC_PRIVATE, 5, IPC_CREAT | IPC_EXCL | S_IRUSR | S_IWUSR);
     if(sem == -1){
         perror("Error creando semaforos.");
         return -1;
     }
 
     arg.val = 1;
-    r = semctl(sem, SEM_JEFE, SETVAL, arg);
-    if(r == -1){
-        perror("Error al inicar el semaforo JEFE");
+    if (semctl(sem, SEM_JEFE, SETVAL, arg) == -1){
+        perror("Error al inicar SEM_JEFE");
+        return -1;
+    }
+
+    arg.val = 1;
+    if (semctl(sem, SEM_EDIFICIO, SETVAL, arg) == -1){
+        perror("Error al inicar SEM_EDIFICIO");
+        return -1;
+    }
+
+    arg.val = 1;
+    if (semctl(sem, SEM_AYUDA, SETVAL, arg) == -1){
+        perror("Error al inicar SEM_AYUDA");
+        return -1;
+    }
+
+    arg.val = 1;
+    if (semctl(sem, SEM_HERRAMIENTAS, SETVAL, arg) == -1){
+        perror("Error al inicar SEM_HERRAMIENTAS");
+        return -1;
+    }
+
+    arg.val = 1;
+    if (semctl(sem, SEM_ENTORPECEDOR, SETVAL, arg) == -1){
+        perror("Error al inicar SEM_ENTORPECEDOR");
         return -1;
     }
 
@@ -189,21 +225,20 @@ int main() {
     Clave = ftok("/bin/ls", 33);
     if (Clave == -1) {
         cout << "No consigo clave para memoria compartida" << endl;
-        exit(0);
+        return -1;
     }
 
     ID_Memoria = shmget(Clave, (sizeof(Jefe) * N_JEFE), 0777 | IPC_CREAT);
     if (ID_Memoria == -1) {
         cerr << "No se pudo obtener el ID para la memoria compartida" << std::endl;
-        exit(1);
+        return -1;
     }
 
     jefasos = (Jefe*)shmat(ID_Memoria, nullptr, 0);
     if (jefasos == (void*)-1) {
         cout << "No consigo memoria compartida" << endl;
-        exit(0);
+        return -1;
     }
-
 
     for (int i = 0; i < N_JEFE; i++) {
         pid = fork();
@@ -212,6 +247,9 @@ int main() {
         }
 
         if (pid == 0) {
+            // ----- GENERAR UNA SEMILLA ALEATORIA EN CADA PROCESO HIJO -----
+            srand(time(NULL) + getpid());
+
             int idJefe = i;
 
             if (idJefe >= NUM_EDIFICIO){
@@ -227,19 +265,29 @@ int main() {
                     perror("Fallo al subir el semaforo 0");
                 
                 cout << "El Jefe " << idJefe << " fue rebocado de su puesto" << endl;
-                exit(0); 
+                exit(0); // ----- FINALIZAR EL PREOCESO JEFE ------
             }
 
             int idEdificio = i;
-            Jefe nuevo(idJefe, idEdificio);
+            Jefe jefeAsignado(idJefe, idEdificio);
             if (semop(sem, &MC_Ocupada, 1) == -1)
-                    perror("Fallo al bajar el semaforo 0");
+                    perror("Fallo al bajar el semaforo JEFE");
             {
-                jefasos[i] = nuevo;
+                jefasos[i] = jefeAsignado;
             }
             if(semop(sem, &MC_Libre, 1) == -1)
-                perror("Fallo al subir el semaforo 0");
-            exit(0);
+                perror("Fallo al subir el semaforo JEFE");
+
+            // ------------ INICIO DE LA ACCIONES DE JEFE-BECARIO -----------
+
+
+
+            
+            for(int n = 0; n < jefeAsignado.getNumGrupo(); n++){
+                wait(nullptr);
+            }
+            cout << "Jefe " << jefeAsignado.getIdJefe() << " a terminado su jornada" << endl;
+            exit(0); // ----- FINALIZA EL PROCESO JEFE -----
         }
     }
 

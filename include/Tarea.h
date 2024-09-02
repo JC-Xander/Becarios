@@ -1,31 +1,35 @@
 #ifndef TAREA_H
 #define TAREA_H
 
-#include <stdlib.h>
-#include <unistd.h>
+#include <vector>
+#include <string>
+#include <cstdlib>
 
+#include "Rol.h"
 /**
  * Tareas que se le asignara al personal
  */
 class Tarea {
-private:
-    int idTarea;
-    int dificultad;
-    bool esElectrica;
+    private:
+        int idRol;
+        int idTarea;
+        int dificultad;
+        bool esElectrica;
 
 public:
+    Tarea();
     /**
      * Crea un nueva tarea
-     * @param string Nombre de la tarea
+     * @param int Rol al que pertenece la tarea
+     * @param int ID de la tarea
      * @param int Dificultad de la tarea
-     * @param bool Ocupa electricidad
      */
-    Tarea(const int, int);
+    Tarea(const int);
 
     /**
      * @return Nombre de la tarea
      */
-    int getIdTarea() const;
+    std::string getNombreTarea() const;
 
     /**
      * @return Difucultad de la tarea

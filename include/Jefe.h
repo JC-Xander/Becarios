@@ -3,10 +3,18 @@
 
 #include <iostream>
 #include <vector> 
+#include <cstdlib>
+#include <unistd.h>
+#include <string>
 
 #include "Entorpecedor.h"
 #include "Edificio.h"
+#include "Rol.h"
 #include "Tarea.h"
+#include "Personal.h"
+
+#define JORNADA 15
+#define NUM_CIRCUNSTANCIAS 2
 
 class Jefe {
 private:
@@ -16,37 +24,85 @@ private:
     int numGrupo; 
     int contTareasCompletadas;
     int contTareasAbandonadas;
-
+    int contTareasParcheadas;
     
 
 public:
+    int jornada;
+    static std::string circunsta[NUM_CIRCUNSTANCIAS];
+    // ---------------- CONSTRUCTORES --------------
+    /**
+     * Crea una instancia jefe dejando sus variables con los valores por defecto.
+     */
     Jefe(int);
     /**
-     * Genera una instancia de jefe con un ID
+     * Genera una instancia de jefe con los valores inicializados para su ejecucucio.
+     * @param _iD : identificador.
+     * @param _idEdificio : Identificador del edificion asignado.
      */
-    Jefe(const int, int);
+    Jefe(const int _ID, int _idEdificio);
 
+    // ----------- GETTERS ---------------
+    /**
+     * @return : edificio del jefe.
+     */
     Edificio getEdificio();
-
-    int getIdJefe();
-    int getContTareasCompletados();
-    int getContTareasAbandonadas();
-
     /**
-     * Agrega personal al grupo
-     * @return retorna verdadero si añade el personal de lo contrario retorna falso
+     * @return : Identificador del jefe
      */
-    bool AgregarPersonal();
-
+    int getIdJefe();
     /**
-     * Retorna el nuemro de integrantes del grupo
+     * @return : Numero de tareas completadas
+     */
+    int getContTareasCompletados();
+    /**
+     * @return : Numero de tareas completadas
+     */
+    int getContTareasAbandonadas();
+    /**
+     * @return : Numero de becarios que el jefe tiene a cargo.
      */
     int getNumGrupo();
+    /**
+     * 
+     */
+    void tareaCompletada();
+    /**
+     * 
+     */
+    void tareaAbandonada();
+    /**
+     * 
+     */
+    void tareaParcheada();
 
-    Tarea PedirTarea(int);
+    // ----------- METODOS ----------------
+    /**
+     * Agregar personal al grupo y crea un nuevo proceso para el.
+     * @param _idPersonal : Identificado del nuevo personal que se añadira.
+     * @param _idArea : Identificador del area al que sera asignado el nuevo personal.
+     * @return : retorna el resultado del fork();
+     */
+    int AgregarPersonal(int _idPersonal, int _idArea);
 
+    /**
+     * Asigna una tarea
+     * @param _personal : Personal al que le enviara la nueva tarea.
+     * @return Si la jornada esta activa asigna una tarea al becario y retorna verdadero de los contrario retorna falso
+     */
+    bool PedirTarea(Personal _personal);
+
+    /**
+     * Ayuda a un becario ya sea por problemas con las tareas o problemas
+     * con el entorpecedos
+     * @return Si fue ayudado retorna verdadero de lo contrario retorna falso.
+     */
     bool Ayuda();
 
+    /**
+     * Solicita la documentación de la tarea al jefe
+     *  @return si el jefe cuanta con la documentación retorna verdadero de lo contrario retorna falso
+     */
     bool pedirDocumentacion();
 
 };
