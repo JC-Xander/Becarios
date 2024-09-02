@@ -21,6 +21,7 @@ const string area[NUM_AREA] = {
 Edificio::Edificio() : edificioActual(-1){}
 
 Edificio::Edificio(int _numEdificio) : edificioActual(_numEdificio) {
+    this->contAreasDisponibles = NUM_AREA;
     for (int i = 0; i < NUM_AREA; i++){
         this->areaDisponible[i] = true;
     }
@@ -35,7 +36,7 @@ bool Edificio::asignarArea(int _numArea){
 
     if (this->areaDisponible[_numArea]){
         this->areaDisponible[_numArea] = false;
-        this->totalAreasDisponibles--;
+        this->contAreasDisponibles--;
         return true;
     }
 
@@ -43,7 +44,7 @@ bool Edificio::asignarArea(int _numArea){
 }
 
 int Edificio::buscarAsignarArea(){
-    if (!this->totalAreasDisponibles){
+    if (!this->contAreasDisponibles){
         return -1;
     }
 
@@ -58,7 +59,7 @@ int Edificio::buscarAsignarArea(){
 }
 
 bool Edificio::desocuparArea(int _numArea){
-    if(_numArea >= NUM_AREA){
+    if(_numArea >= NUM_AREA || _numArea < 0){
         cerr << "!ERROR¡ " <<"Area: " << _numArea << " No existe" << endl;
         exit(1);
     }
@@ -67,7 +68,7 @@ bool Edificio::desocuparArea(int _numArea){
         return false;
     }else{
         this->areaDisponible[_numArea] = true;
-        this->totalAreasDisponibles++;
+        this->contAreasDisponibles++;
         return true;
     }
 }
@@ -76,8 +77,8 @@ int Edificio::getIdEdificio(){
     return this->edificioActual;
 }
 
-int Edificio::getTotalAreasDisponibles(){
-    return this->totalAreasDisponibles;
+int Edificio::getcontAreasDisponibles(){
+    return this->contAreasDisponibles;
 }
 string Edificio::getEdificio(){
     return edificio[this->edificioActual];
@@ -90,5 +91,9 @@ string Edificio::getData(int _numArea){
     string auxEdificio = this->getEdificio();
     string auxArea = this->getArea(_numArea);
     return auxEdificio + " : " + auxArea;
+}
+
+string Edificio::getNombreEdificio(int _idEdificio){
+    return edificio[_idEdificio];
 }
 

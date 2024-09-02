@@ -22,3 +22,14 @@ string Personal::getRolAsignado() { return getRol(this->idRol); }
 Tarea Personal::getTareaAsignada() { return this->tareaAsignada; }
 
 void Personal::setAsignarTarea(Tarea _tarea) { this->tareaAsignada = _tarea; }
+
+bool Personal::disminuirCordura() {
+    this->cordura--;
+
+    if(this->cordura == 0){
+        this->cordura = (rand() % 3) + 5;
+        return true;
+    }
+
+    return false;
+}

@@ -47,10 +47,11 @@ public:
     /**
      * @return : edificio del jefe.
      */
-    Edificio getEdificio();
+    Edificio& getEdificio();
     /**
      * @return : Identificador del jefe
      */
+    Entorpecedor& getEntorpecedor();
     int getIdJefe();
     /**
      * @return : Numero de tareas completadas
@@ -64,6 +65,10 @@ public:
      * @return : Numero de becarios que el jefe tiene a cargo.
      */
     int getContPersonal();
+    /**
+     * 
+     */
+    int getContTareasParcheadas();
     /**
      * 
      */
@@ -88,7 +93,7 @@ public:
      * @param _personal : Personal al que le enviara la nueva tarea.
      * @return Si la jornada esta activa asigna una tarea al becario y retorna verdadero de los contrario retorna falso
      */
-    bool PedirTarea(Personal _personal);
+    bool PedirTarea(Personal& _personal);
 
     /**
      * Ayuda a un becario ya sea por problemas con las tareas o problemas

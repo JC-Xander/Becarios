@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <unistd.h>
+#include "Edificio.h"
 
 #define NUM_ACCIONES 7
 
@@ -19,13 +20,14 @@ class Entorpecedor {
 		    "preguntar continuamente sobre el progreso de tareas no prioritarias"
         };
         int idBecario;
-        int edificio;
+        int idEdificio;
     
     public:
         Entorpecedor();
         Entorpecedor(const int);
+        int getIdBecario();
         bool setIdBecario(const int);
-        bool MolestarBecario();
+        bool molestarBecario();
         bool FinalizoTarea();
 };
 

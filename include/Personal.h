@@ -8,6 +8,10 @@
 
 #define CIRCUNSTANCIAS_PERSONAL 3
 
+#define ABANDONATAREA 0
+#define COMPLETOTAREA 1
+#define PARCHEOTAREA 2
+
 class Personal {
     private:
         int idRol;
@@ -23,6 +27,7 @@ class Personal {
         Tarea getTareaAsignada();
         int getIdRol();
         void setAsignarTarea(Tarea _tarea);
+        bool disminuirCordura();
 };
 
 #endif // PERSONAL_H

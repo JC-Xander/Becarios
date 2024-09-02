@@ -29,19 +29,17 @@ Jefe::Jefe(const int _ID, int _idEdificio) {
 // -- GETTERS
 int Jefe::getIdJefe() { return this->idJefe; }
 
-Edificio Jefe::getEdificio() { return this->edificio; }
+Edificio& Jefe::getEdificio() { return this->edificio; }
+Entorpecedor& Jefe::getEntorpecedor() { return this->entorpecedor; }
 
 int Jefe::getContTareasCompletados() { return this->contTareasCompletadas; }
-
 int Jefe::getContTareasAbandonadas() { return this->contTareasAbandonadas; }
-
 int Jefe::getContPersonal() { return this->contPersonal; }
+int Jefe::getContTareasParcheadas() { return this->contTareasParcheadas; }
 
 // -- METODOS --
 void Jefe::tareaCompletada() { this->contTareasCompletadas++; }
-
 void Jefe::tareaAbandonada() { this->contTareasAbandonadas++; }
-
 void Jefe::tareaParcheada() { this->contTareasParcheadas++; }
 
 bool Jefe::AgregarPersonal() {
@@ -53,8 +51,8 @@ bool Jefe::AgregarPersonal() {
     return false;
 }
 
-bool Jefe::PedirTarea(Personal _personal){
-    if (jornada <= INIT_PARCHEOS){
+bool Jefe::PedirTarea(Personal& _personal){
+    if (!jornada){
         return false;
     }
 

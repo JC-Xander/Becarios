@@ -14,20 +14,21 @@ extern const std::string area[NUM_AREA];
 class Edificio {
     private:
         int edificioActual;
-        int totalAreasDisponibles = NUM_AREA;
+        int contAreasDisponibles;
         bool areaDisponible[NUM_AREA];
 
     public:
         Edificio();
         Edificio(int);
-        int getTotalAreasDisponibles();
+        int getcontAreasDisponibles();
         bool asignarArea(int);
         bool desocuparArea(int);
         int buscarAsignarArea();
         int getIdEdificio();
         std::string getEdificio();
-        std::string getArea(int);
+        static std::string getArea(int);
         std::string getData(int);
+        static std::string getNombreEdificio(int);
 
 };
 #endif // EDIFICIO_H

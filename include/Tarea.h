@@ -5,6 +5,9 @@
 #include <string>
 #include <cstdlib>
 
+#define MAX_DIFICULTAD 5
+
+
 #include "Rol.h"
 /**
  * Tareas que se le asignara al personal

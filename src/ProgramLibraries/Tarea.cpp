@@ -2,38 +2,36 @@
 
 using namespace std;
 
-const int MAX_DIFICULTAD = 5;
-
 vector<string> sofware = {
-    "sofware tares 0",
-    "sofware tares 1",
-    "sofware tares 2",
-    "sofware tares 3",
-    "sofware tares 4"
+    "sofware tarea 0",
+    "sofware tarea 1",
+    "sofware tarea 2",
+    "sofware tarea 3",
+    "sofware tarea 4"
 };
 
 vector<string> hardware = {
-    "hardware tares 0",
-    "hardware tares 1",
-    "hardware tares 2",
-    "hardware tares 3",
-    "hardware tares 4"
+    "hardware tarea 0",
+    "hardware tarea 1",
+    "hardware tarea 2",
+    "hardware tarea 3",
+    "hardware tarea 4"
 };
 
 vector<string> datos = {
-    "datos tares 0",
-    "datos tares 1",
-    "datos tares 2",
-    "datos tares 3",
-    "datos tares 4"
+    "datos tarea 0",
+    "datos tarea 1",
+    "datos tarea 2",
+    "datos tarea 3",
+    "datos tarea 4"
 };
 
 vector<string> redes = {
-    "redes tares 0",
-    "redes tares 1",
-    "redes tares 2",
-    "redes tares 3",
-    "redes tares 4"
+    "redes tarea 0",
+    "redes tarea 1",
+    "redes tarea 2",
+    "redes tarea 3",
+    "redes tarea 4"
 };
 
 vector<vector<string>> TotalTareas = {
