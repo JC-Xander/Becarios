@@ -2,9 +2,9 @@
 
 using namespace std;
 
-string Jefe::circunsta[NUM_CIRCUNSTANCIAS] = {
-    "no estaba en su area de trabajo.",
-    "estaba comiendo."
+string Jefe::circunstancias[CIRCUNSTANCIAS_JEFE] = {
+    "no estaba en su area de trabajo",
+    "estaba comiendo"
 };
 
 // -- CONSTRUCTORES --
@@ -18,7 +18,7 @@ Jefe::Jefe(const int _ID, int _idEdificio) {
     Entorpecedor entorpecedorAux(_idEdificio);
     this->entorpecedor = entorpecedorAux;
 
-    this->numGrupo = 0;
+    this->contPersonal = 0;
     this->contTareasCompletadas = 0;
     this->contTareasAbandonadas = 0;
     this->contTareasParcheadas = 0;
@@ -35,7 +35,7 @@ int Jefe::getContTareasCompletados() { return this->contTareasCompletadas; }
 
 int Jefe::getContTareasAbandonadas() { return this->contTareasAbandonadas; }
 
-int Jefe::getNumGrupo() { return this->numGrupo; }
+int Jefe::getContPersonal() { return this->contPersonal; }
 
 // -- METODOS --
 void Jefe::tareaCompletada() { this->contTareasCompletadas++; }
@@ -44,12 +44,17 @@ void Jefe::tareaAbandonada() { this->contTareasAbandonadas++; }
 
 void Jefe::tareaParcheada() { this->contTareasParcheadas++; }
 
-int AgregarPersonal(int _idPersonal, int _idArea) {
+bool Jefe::AgregarPersonal() {
+    if ((rand() % 5) != 0){
+        this->contPersonal++;
+        return true;
+    }
 
-    return true;
+    return false;
 }
+
 bool Jefe::PedirTarea(Personal _personal){
-    if (jornada == 0){
+    if (jornada <= INIT_PARCHEOS){
         return false;
     }
 

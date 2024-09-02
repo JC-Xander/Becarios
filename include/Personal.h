@@ -6,6 +6,8 @@
 #include "Tarea.h"
 #include "Rol.h"
 
+#define CIRCUNSTANCIAS_PERSONAL 3
+
 class Personal {
     private:
         int idRol;
@@ -14,6 +16,8 @@ class Personal {
         Tarea tareaAsignada;
 
     public:
+        static std::string circunstacias[CIRCUNSTANCIAS_PERSONAL];
+
         Personal(int _idRol, int _idArea);
         std::string getRolAsignado();
         Tarea getTareaAsignada();

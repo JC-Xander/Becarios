@@ -283,7 +283,7 @@ int main() {
 
 
             
-            for(int n = 0; n < jefeAsignado.getNumGrupo(); n++){
+            for(int n = 0; n < jefeAsignado.getContPersonal(); n++){
                 wait(nullptr);
             }
             cout << "Jefe " << jefeAsignado.getIdJefe() << " a terminado su jornada" << endl;
@@ -310,7 +310,7 @@ int main() {
 
         cout << "¿----- ESTADISTICAS JEFE " << jefeActual.getIdJefe() << " ------?" << endl;
         cout << "-> Edificio: " << jefeActual.getEdificio().getEdificio() << endl;
-        cout << "-> Becarios a cargo : " << jefeActual.getNumGrupo() << endl; 
+        cout << "-> Becarios a cargo : " << jefeActual.getContPersonal() << endl; 
         cout << "-> Tareas Completadas: " << jefeActual.getContTareasCompletados() << endl;
         cout << "-> Tareas Abandonadas: " << jefeActual.getContTareasAbandonadas() << endl;
         cout << "-------------------------------------------------\n" << endl;

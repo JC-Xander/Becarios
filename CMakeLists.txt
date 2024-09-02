@@ -17,4 +17,4 @@ add_subdirectory(src)
 add_executable(BecariosRun src/Main.cpp)
 
 # Vincular las bibliotecas con el ejecutable principal
-target_link_libraries(BecariosRun Jefe Entorpecedor Personal Tarea Rol Edificio)
+target_link_libraries(BecariosRun MiBiblioteca)

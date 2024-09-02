@@ -14,14 +14,15 @@
 #include "Personal.h"
 
 #define JORNADA 15
-#define NUM_CIRCUNSTANCIAS 2
+#define INIT_PARCHEOS 3
+#define CIRCUNSTANCIAS_JEFE 2
 
 class Jefe {
 private:
     int idJefe;
     Edificio edificio;
     Entorpecedor entorpecedor;
-    int numGrupo; 
+    int contPersonal; 
     int contTareasCompletadas;
     int contTareasAbandonadas;
     int contTareasParcheadas;
@@ -29,7 +30,7 @@ private:
 
 public:
     int jornada;
-    static std::string circunsta[NUM_CIRCUNSTANCIAS];
+    static std::string circunstancias[CIRCUNSTANCIAS_JEFE];
     // ---------------- CONSTRUCTORES --------------
     /**
      * Crea una instancia jefe dejando sus variables con los valores por defecto.
@@ -62,7 +63,7 @@ public:
     /**
      * @return : Numero de becarios que el jefe tiene a cargo.
      */
-    int getNumGrupo();
+    int getContPersonal();
     /**
      * 
      */
@@ -79,11 +80,8 @@ public:
     // ----------- METODOS ----------------
     /**
      * Agregar personal al grupo y crea un nuevo proceso para el.
-     * @param _idPersonal : Identificado del nuevo personal que se añadira.
-     * @param _idArea : Identificador del area al que sera asignado el nuevo personal.
-     * @return : retorna el resultado del fork();
      */
-    int AgregarPersonal(int _idPersonal, int _idArea);
+    bool AgregarPersonal();
 
     /**
      * Asigna una tarea

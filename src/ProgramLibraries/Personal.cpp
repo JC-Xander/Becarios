@@ -2,6 +2,12 @@
 
 using namespace std;
 
+string Personal::circunstacias[CIRCUNSTANCIAS_PERSONAL] = {
+    "se enfermo.",
+    "tuvo un accidente",
+    "tuvo dia libre"
+};
+
 Personal::Personal(int _idRol, int _idArea) {
     this->idRol = _idRol;
     this->idArea = _idArea;
