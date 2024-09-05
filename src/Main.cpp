@@ -93,8 +93,8 @@
  */
 using namespace std;
 
-#define N_BECARIO 10
-#define N_JEFE 1         // Numero de Jefes
+#define N_BECARIO 7
+#define N_JEFE 1     // Numero de Jefes
 #define SEM_JEFE 0           // Proceso JEFE
 #define SEM_EDIFICIO 1
 #define SEM_AYUDA 2          // Proceso Becario
@@ -395,7 +395,7 @@ int main() {
                         exit(1);
                     }
 
-                    // El becario asignada no se presento.
+                    // El becario asignado no se presento.
                     if(!resultado){
                         cout << "El Becario " << idBecario << " no se presento porque: " << Personal::circunstacias[rand() % CIRCUNSTANCIAS_PERSONAL] << endl;
                         if (semop(sem, &EDIFICIO_BAJA, 1) == -1){
@@ -429,7 +429,7 @@ int main() {
                             exit(1);
                         }
                         if(!resultado){
-                            cout << "La jornada finalizo el becario " << idBecario << " no puede recibir más tareas.";
+                            cout << "La jornada finalizo el becario " << idBecario << " no puede recibir más tareas." << endl;
                             cout << "----- Becario " << idBecario << "Finalizo su jornada laboral -----" << endl; 
                             exit(0); // Finaliza el proceso becario por finalizacion de su jornada laboral. 
                         }
@@ -448,14 +448,14 @@ int main() {
                                 cout << "El becario " << idBecario << " a pedido ayuda al jefe" << endl;
 
                                 if (semop(sem, &AYUDA_BAJA, 1) == -1){
-                                    perror("Fallo al bajar el semaforo 0");
+                                    perror("Fallo al bajar el semaforo 2");
                                     exit(1);
                                 }
                                 {
                                     resultado = jefe->Ayuda();
                                 }
                                 if(semop(sem, &AYUDA_SUBE, 1) == -1){
-                                    perror("Fallo al subir el semaforo 1");
+                                    perror("Fallo al subir el semaforo 2");
                                     exit(1);
                                 }
                                 if(!resultado){
@@ -472,42 +472,57 @@ int main() {
                             }
 
                             // Interrupción entorpecedor
+                            
                             if ((rand() % 2) == 0){
+                                int idObjetivo;
                                 if (semop(sem, &ENTORPECEDOR_BAJA, 1) == -1){
                                     perror("Fallo al bajar el semaforo 4");
                                     exit(1);
                                 }
                                 {
-                                    resultado = jefe->getEntorpecedor().molestarBecario();
+                                    idObjetivo = jefe->getEntorpecedor().getIdBecario();
                                 }
                                 if(semop(sem, &ENTORPECEDOR_SUBE, 1) == -1){
                                     perror("Fallo al subir el semaforo 4");
                                     exit(1);
-                                }   
+                                }  
 
-                                if(resultado){
-                                    if(becario.disminuirCordura()){
-                                        cout << "El becario " << idBecario << " a pedido ayuda al jefe con el entorpecedor." << endl;
-                                        if (semop(sem, &AYUDA_BAJA, 1) == -1){
-                                            perror("Fallo al bajar el semaforo 0");
-                                            exit(1);
-                                        }
-                                        {
-                                            resultado = jefe->Ayuda();
-                                        }
-                                        if(semop(sem, &AYUDA_SUBE, 1) == -1){
-                                            perror("Fallo al subir el semaforo 1");
-                                            exit(1);
-                                        }
-                                        
-                                        if(resultado){
-                                            cout << "Jefe " << idJefe << " a ayudado al becario " << idBecario << " con el entorpecedor." << endl;
-                                        }else{
-                                            cout << "El becario " << idBecario << " no recibio ayuda ya que el jefe " << Jefe::circunstancias[rand() % CIRCUNSTANCIAS_JEFE] << endl;
-                                            cout << "El becario " << idBecario << " no soporta al entorpecedor " << endl;
-                                            cout << "El becario " << idBecario << " a abandonado la tarea." << endl;
-                                            resultadoTarea = ABANDONATAREA;
-                                            break;
+                                if(idObjetivo == idBecario){
+                                    if (semop(sem, &ENTORPECEDOR_BAJA, 1) == -1){
+                                        perror("Fallo al bajar el semaforo 4");
+                                        exit(1);
+                                    }
+                                    {
+                                        resultado = jefe->getEntorpecedor().molestarBecario();
+                                    }
+                                    if(semop(sem, &ENTORPECEDOR_SUBE, 1) == -1){
+                                        perror("Fallo al subir el semaforo 4");
+                                        exit(1);
+                                    }
+                                    if(resultado){
+                                        if(becario.disminuirCordura()){
+                                            cout << "El becario " << idBecario << " a pedido ayuda al jefe con el entorpecedor." << endl;
+                                            if (semop(sem, &AYUDA_BAJA, 1) == -1){
+                                                perror("Fallo al bajar el semaforo 0");
+                                                exit(1);
+                                            }
+                                            {
+                                                resultado = jefe->Ayuda();
+                                            }
+                                            if(semop(sem, &AYUDA_SUBE, 1) == -1){
+                                                perror("Fallo al subir el semaforo 1");
+                                                exit(1);
+                                            }
+                                            
+                                            if(resultado){
+                                                cout << "Jefe " << idJefe << " a ayudado al becario " << idBecario << " con el entorpecedor." << endl;
+                                            }else{
+                                                cout << "El becario " << idBecario << " no recibio ayuda ya que el jefe " << Jefe::circunstancias[rand() % CIRCUNSTANCIAS_JEFE] << endl;
+                                                cout << "El becario " << idBecario << " no soporta al entorpecedor " << endl;
+                                                cout << "El becario " << idBecario << " a abandonado la tarea." << endl;
+                                                resultadoTarea = ABANDONATAREA;
+                                                break;
+                                            }
                                         }
                                     }
                                 }
@@ -526,14 +541,15 @@ int main() {
                                 perror("Fallo al subir el semaforo 3");
                                 exit(1);
                             }
-                            if(numJornada >= INIT_PARCHEOS){
+                            if(numJornada == 0){
                                 cout << "------- La Jornada esta por terminar -------" << endl;
                                 cout << "El becario " << idBecario << "Esta parcheando la tarea";
                                 resultadoTarea = PARCHEOTAREA;
-                                sleep(INIT_PARCHEOS);
                                 break;
                             }
-                        }
+                        } // ---- Sale de la ejecucion de tareas ---
+
+
                         if(resultadoTarea == COMPLETOTAREA){
                             cout << "El becario " << idBecario << " a completado la tarea: " << becario.getTareaAsignada().getNombreTarea() << endl; 
                         } 
@@ -569,6 +585,23 @@ int main() {
                             perror("Fallo al subir el semaforo 1");
                             exit(1);
                         }
+
+                        int numJornada = 0;
+                        if (semop(sem, &JORNADA_BAJA, 1) == -1){
+                            perror("Fallo al bajar el semaforo 3");
+                            exit(1);
+                        }
+                        {
+                            numJornada = jefe->jornada;
+                        }
+                        if(semop(sem, &JORNADA_SUBE, 1) == -1){
+                            perror("Fallo al subir el semaforo 3");
+                            exit(1);
+                        }
+                        if(numJornada == 0){
+                            cout << "------- La Jornada a terminado -------" << endl;
+                            exit(0);
+                        }
                     }
                     exit(0); // Finaliza el Proceso becario;
                 }
@@ -581,12 +614,13 @@ int main() {
             }
             {
                 jefasos[posicion].getEntorpecedor().setIdBecario(rand() % jefasos[posicion].getContPersonal());
-                cout << "El entorpecedor a empezado a molestar al becario " << jefasos[posicion].getEntorpecedor().getIdBecario() << endl;
             }
             if(semop(sem, &ENTORPECEDOR_SUBE, 1) == -1){
                 perror("Fallo al subir el semaforo 4");
                 exit(1);
             }
+            cout << "El entorpecedor a empezado a molestar al becario " << jefasos[posicion].getEntorpecedor().getIdBecario() << endl;
+
             // Inicialdo jornada()
             int pidJornada = fork();
 
@@ -597,7 +631,7 @@ int main() {
 
             if (pidJornada == 0){
                 for (int j = 0; j < JORNADA; j++){
-                    sleep(1);
+                    sleep(2);
                     if (semop(sem, &JORNADA_BAJA, 1) == -1){
                         perror("Fallo al bajar el semaforo 3");
                         exit(1);
@@ -652,12 +686,13 @@ int main() {
     shmdt((void*)jefasos);
     shmctl(ID_Memoria, IPC_RMID, (struct shmid_ds*)NULL);
 
-	while ( (pid !=-1) ||  (pid == -1 && errno == EINTR) )
+	while ( (pid !=-1) ||  (pid == -1 && errno == EINTR) ) {
 		pid = wait(&r);
 		r = semctl(sem, 0, IPC_RMID);
 
 		if (r == -1)
 			perror("Error eliminando semáforos.");
+    }
 
 	printf("Fin.\n");
     return 0;

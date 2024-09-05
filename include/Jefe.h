@@ -13,8 +13,7 @@
 #include "Tarea.h"
 #include "Personal.h"
 
-#define JORNADA 15
-#define INIT_PARCHEOS 3
+#define JORNADA 20
 #define CIRCUNSTANCIAS_JEFE 2
 
 class Jefe {
