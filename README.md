@@ -8,13 +8,16 @@
 ```
 
 @author: JC-Xander<br>
-@version: 0.1.2<br>
+@version: 1.0.0<br>
 @since:  2024/08/04
 
 ## Documentación
+Programa que simula una jornada laboral, donde un jefe le asigna tareas a su personal y lleva un registro de las tareas completadas en la jornada, si la nornada esta por terminar los becarios realizan un parcheo, y si tiene problemas con las tareas, pueden llegar a abandonarla.
 
-### Proyecto-Jean
-#### Copilacion
+# Problemas
+- Los semaforos se quedan pillados cuando hay mas de un proceso jefe activo y si un proceso jefe tiene 0 de personal el programa tiende a fallar.
+
+# Copilacion
 Para copilarlo utilizo el programe `CMake` el cual debe estar previamente instalado.
 - Instalación CMake
     - Actualiza lista de paquetes (Opcional)
